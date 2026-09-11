@@ -1,0 +1,51 @@
+@startuml
+
+enum MetaTileType {
+    H
+    T
+    P
+    F
+}
+
+class Tile {
+    Vector2 Position
+    float Rotation
+    bool Reflected
+}
+
+class MetaTile {
+    MetaTileType Type
+    int Level
+    List<Tile> Tiles
+}
+
+class Rule {
+    MetaTileType Result
+    int TileA
+    int EdgeA
+    int TileB
+    int EdgeB
+}
+
+class MetaTileGenerator {
+    List<Rule> Rules
+
+    MetaTile Generate(MetaTileType type, int level)
+}
+
+class GridGenerator {
+    int GenerationLevel
+    MetaTileGenerator Generator
+
+    void GenerateGrid()
+}
+
+MetaTile --> MetaTileType
+MetaTile o-- Tile
+
+MetaTileGenerator o-- Rule
+MetaTileGenerator --> MetaTile
+
+GridGenerator --> MetaTileGenerator
+
+@enduml
