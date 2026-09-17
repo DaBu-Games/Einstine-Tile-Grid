@@ -4,6 +4,25 @@ namespace DaBu.EGS.GeometryHelper
 {
     public static class Vector2Extensions
     {
+        private static readonly Vector2Int[] hatOutline =
+        {
+            new Vector2Int(0, 0),
+            new Vector2Int(-1, -1),
+            new Vector2Int(0, -2),
+            new Vector2Int(2, -2),
+
+            new Vector2Int(2, -1),
+            new Vector2Int(4, -2),
+            new Vector2Int(5, -1),
+            new Vector2Int(4, 0),
+
+            new Vector2Int(3, 0),
+            new Vector2Int(2, 2),
+            new Vector2Int(0, 3),
+            new Vector2Int(0, 2),
+            new Vector2Int(-1, 2)
+        };
+        
         public static Vector2 HexPt(this Vector2 point, float cellSize = 1f)
         {
             return new Vector2(
