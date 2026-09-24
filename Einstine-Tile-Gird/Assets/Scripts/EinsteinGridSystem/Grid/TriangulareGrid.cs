@@ -4,8 +4,7 @@ using UnityEngine;
 
 namespace DaBu.EGS.Grid
 {
-    [RequireComponent(typeof(MeshFilter))]
-    [RequireComponent(typeof(MeshRenderer))]
+    [RequireComponent(typeof(MeshCollider))]
     public class TriangulareGrid : MonoBehaviour
     {
         [SerializeField] private Vector2Int gridSize = new Vector2Int(10, 10);
@@ -13,11 +12,11 @@ namespace DaBu.EGS.Grid
 
         private Vector2[] grid;
         
-        private MeshFilter meshFilter;
+        private MeshCollider meshCollider;
 
         private void Start()
         {
-            meshFilter = GetComponent<MeshFilter>();
+            meshCollider = GetComponent<MeshCollider>();
 
             GenerateGrid();
             GenerateMesh();
@@ -38,8 +37,6 @@ namespace DaBu.EGS.Grid
                     grid[y * width + x] = gridPosition.HexPt(cellSize);
                 }
             }
-            
-           
         }
 
         private void GenerateMesh()
@@ -50,7 +47,7 @@ namespace DaBu.EGS.Grid
             List<Vector3> vertices = new List<Vector3>();
             List<int> triangles = new List<int>();
             List<Color> colors = new List<Color>();
-
+            
             for (int y = 0; y < height - 1; y++)
             {
                 for (int x = 0; x < width - 1; x++)
@@ -59,7 +56,6 @@ namespace DaBu.EGS.Grid
                     int bIndex = aIndex + 1;
                     int cIndex = (y + 1) * width + x;
                     int dIndex = cIndex + 1;
-
                     
                     Vector3 a = new Vector3(grid[aIndex].x, 0f, grid[aIndex].y);
                     Vector3 b = new Vector3(grid[bIndex].x, 0f, grid[bIndex].y);
@@ -94,13 +90,15 @@ namespace DaBu.EGS.Grid
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
 
-            meshFilter.mesh = mesh;
+            meshCollider.sharedMesh = mesh;
         }
         
         private void AddTriangleAsKites(Vector3 a, Vector3 b, Vector3 c, List<Vector3> vertices, List<int> triangles, List<Color> colors)
         {
+            // triangle mid point
             Vector3 center = (a + b + c) / 3f;
 
+            // edge mid points
             Vector3 ab = (a + b) / 2f;
             Vector3 bc = (b + c) / 2f;
             Vector3 ca = (c + a) / 2f;

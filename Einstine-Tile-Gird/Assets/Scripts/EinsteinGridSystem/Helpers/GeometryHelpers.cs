@@ -4,7 +4,7 @@ namespace DaBu.EGS.GeometryHelper
 {
     public static class Vector2Extensions
     {
-        private static readonly Vector2Int[] hatOutline =
+        public static readonly Vector2Int[] hatOutline =
         {
             new Vector2Int(0, 0),
             new Vector2Int(-1, -1),
