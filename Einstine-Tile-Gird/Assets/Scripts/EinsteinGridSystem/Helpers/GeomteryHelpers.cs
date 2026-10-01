@@ -4,30 +4,29 @@ namespace DaBu.EGS.GeometryHelper
 {
     public static class Vector2Extensions
     {
-        public static readonly Vector2Int[] hatOutline =
+        public static readonly float Hr3 = Mathf.Sqrt(3f) / 2f;
+        public static readonly Vector2[] hatOutline =
         {
-            new Vector2Int(0, 0),
-            new Vector2Int(-1, -1),
-            new Vector2Int(0, -2),
-            new Vector2Int(2, -2),
-
-            new Vector2Int(2, -1),
-            new Vector2Int(4, -2),
-            new Vector2Int(5, -1),
-            new Vector2Int(4, 0),
-
-            new Vector2Int(3, 0),
-            new Vector2Int(2, 2),
-            new Vector2Int(0, 3),
-            new Vector2Int(0, 2),
-            new Vector2Int(-1, 2)
+            new Vector2(0, 0),
+            new Vector2(-1, -1),
+            new Vector2(0, -2),
+            new Vector2(2, -2),
+            new Vector2(2, -1),
+            new Vector2(4, -2),
+            new Vector2(5, -1),
+            new Vector2(4, 0),
+            new Vector2(3, 0),
+            new Vector2(2, 2),
+            new Vector2(0, 3),
+            new Vector2(0, 2),
+            new Vector2(-1, 2)
         };
         
         public static Vector2 HexPt(this Vector2 point, float cellSize = 1f)
         {
             return new Vector2(
                 (point.x + 0.5f * point.y) * cellSize,
-                (Mathf.Sqrt(3f) / 2f * point.y) * cellSize
+                (Hr3 * point.y) * cellSize
             );
         }
 
@@ -58,6 +57,22 @@ namespace DaBu.EGS.GeometryHelper
             matrix.m11 = dx;
             matrix.m13 = p.y;
             
+            return matrix;
+        }
+        
+        // constructs a 2D transformation matrix that combines two transform points in to one
+        public static Matrix4x4 Affine2D(float m00, float m01, float tx, float m10, float m11, float ty)
+        {
+            Matrix4x4 matrix = Matrix4x4.identity;
+
+            matrix.m00 = m00;
+            matrix.m01 = m01;
+            matrix.m03 = tx;
+
+            matrix.m10 = m10;
+            matrix.m11 = m11;
+            matrix.m13 = ty;
+
             return matrix;
         }
 
