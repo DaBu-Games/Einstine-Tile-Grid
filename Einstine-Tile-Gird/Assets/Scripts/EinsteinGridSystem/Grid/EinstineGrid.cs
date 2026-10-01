@@ -44,6 +44,10 @@ namespace DaBu.EGS.Grid
 
             foreach (Tile child in tileFactory.GetSuperTile(tileType, level).Children)
             {
+                Debug.Log(
+                    $"{child.TileType} scale = " +
+                    $"{child.Transform.GetColumn(0).magnitude}"
+                );
                 AddHat(child, vertices, triangles, colors);
             }
 

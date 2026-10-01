@@ -12,6 +12,8 @@ namespace DaBu.EGS.Tiles
             Transform = transform;
             TileType = type;
         }
+        
+        public void SetTransform(Matrix4x4 transform) => Transform = transform;
     }
 }
 
