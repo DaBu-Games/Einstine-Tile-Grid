@@ -9,7 +9,7 @@ namespace DaBu.EGS.Grid
     [RequireComponent(typeof(MeshRenderer))]
     public class EinstineGrid : MonoBehaviour
     {
-        [SerializeField] private float cellSize = 1f;
+        public static float CellSize = 1f;
         
         private MetaTileFactory tileFactory;
             
@@ -57,9 +57,7 @@ namespace DaBu.EGS.Grid
             {
                 Vector2 transformed = transform.MultiplyPoint3x4(new Vector3(point.x, point.y, 0f));
                 
-                Vector2 worldPoint = transformed.HexPt(cellSize);
-                
-                vertices.Add(new Vector3(worldPoint.x, 0, worldPoint.y));
+                vertices.Add(new Vector3(transformed.x * CellSize, 0, transformed.y * CellSize));
             }
             
             TriangulateHat(startIndex, triangles);

@@ -34,7 +34,7 @@ namespace DaBu.EGS.Grid
                 for (int x = 0; x < width; x++)
                 {
                     Vector2 gridPosition = new Vector2Int(x, y);
-                    grid[y * width + x] = gridPosition.HexPt(cellSize);
+                    grid[y * width + x] = gridPosition.HexPt();
                 }
             }
         }

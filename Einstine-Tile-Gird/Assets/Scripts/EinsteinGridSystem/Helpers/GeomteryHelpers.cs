@@ -1,3 +1,4 @@
+using DaBu.EGS.Grid;
 using UnityEngine;
 
 namespace DaBu.EGS.GeometryHelper
@@ -7,26 +8,26 @@ namespace DaBu.EGS.GeometryHelper
         public static readonly float Hr3 = Mathf.Sqrt(3f) / 2f;
         public static readonly Vector2[] hatOutline =
         {
-            new Vector2(0, 0),
-            new Vector2(-1, -1),
-            new Vector2(0, -2),
-            new Vector2(2, -2),
-            new Vector2(2, -1),
-            new Vector2(4, -2),
-            new Vector2(5, -1),
-            new Vector2(4, 0),
-            new Vector2(3, 0),
-            new Vector2(2, 2),
-            new Vector2(0, 3),
-            new Vector2(0, 2),
-            new Vector2(-1, 2)
+            new Vector2(0, 0).HexPt(),
+            new Vector2(-1, -1).HexPt(),
+            new Vector2(0, -2).HexPt(),
+            new Vector2(2, -2).HexPt(),
+            new Vector2(2, -1).HexPt(),
+            new Vector2(4, -2).HexPt(),
+            new Vector2(5, -1).HexPt(),
+            new Vector2(4, 0).HexPt(),
+            new Vector2(3, 0).HexPt(),
+            new Vector2(2, 2).HexPt(),
+            new Vector2(0, 3).HexPt(),
+            new Vector2(0, 2).HexPt(),
+            new Vector2(-1, 2).HexPt()
         };
         
-        public static Vector2 HexPt(this Vector2 point, float cellSize = 1f)
+        public static Vector2 HexPt(this Vector2 point)
         {
             return new Vector2(
-                (point.x + 0.5f * point.y) * cellSize,
-                (Hr3 * point.y) * cellSize
+                (point.x + 0.5f * point.y) * EinstineGrid.CellSize,
+                (Hr3 * point.y) * EinstineGrid.CellSize
             );
         }
 
@@ -81,7 +82,7 @@ namespace DaBu.EGS.GeometryHelper
             Matrix4x4 from = MatchSeg(p1, q1);
             Matrix4x4 to = MatchSeg(p2, q2);
             
-            return from * to;
+            return to * from.inverse;
         }
     }
 }

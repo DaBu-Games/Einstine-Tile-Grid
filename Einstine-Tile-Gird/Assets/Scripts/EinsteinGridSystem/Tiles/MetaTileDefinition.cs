@@ -20,9 +20,9 @@ namespace DaBu.EGS.Tiles
             return _outline[index];
         }
 
-        public Vector2 GetWorldPosition(int index, float cellSize)
+        public Vector2 GetWorldPosition(int index)
         {
-            return _outline[index].HexPt(cellSize);
+            return _outline[index].HexPt();
         }
     }
 }
