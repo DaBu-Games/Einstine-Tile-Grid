@@ -1,7 +1,10 @@
-public enum MetaTileType
+namespace DaBu.EGS.Tiles
 {
-    H,
-    T,
-    P,
-    F
+    public enum MetaTileType
+    {
+        H,
+        T,
+        P,
+        F
+    }
 }

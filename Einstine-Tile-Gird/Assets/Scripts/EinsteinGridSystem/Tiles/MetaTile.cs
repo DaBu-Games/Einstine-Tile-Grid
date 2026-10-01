@@ -1,21 +1,32 @@
 using System.Collections.Generic;
+using DaBu.EGS.GeometryHelper;
 using UnityEngine;
 
-public class MetaTile
+namespace DaBu.EGS.Tiles
 {
-    public Vector2 Position { get; set; }
-    public float Rotation { get; set; }
-    
-    public MetaTileType Type { get; private set; }
-    public int Level { get; private set; }
-    public List<MetaTile> Children { get; private set; }
-
-    public MetaTile(MetaTileType type, int level)
+    public class MetaTile
     {
-        Type = type;
-        Level = level;
-        Children = new List<MetaTile>();
-    }
+        private MetaTileDefinition _definition;
+        public List<Tile> Children { get; private set; }
     
-    public void AddTile(MetaTile tile) => Children.Add(tile);
+        public MetaTile(MetaTileDefinition definition)
+        {
+            _definition = definition;
+            Children = new List<Tile>();
+        }
+        
+        public void AddChild(Tile tile) => Children.Add(tile);
+        
+        public void AddChild(int hatP, int hatQ, int metaP, int metaQ, string name)
+        {
+            Matrix4x4 transform = MatrixExtensions.MatchTwo(
+                Vector2Extensions.hatOutline[hatP],
+                Vector2Extensions.hatOutline[hatQ],
+                _definition.Outline(metaP),
+                _definition.Outline(metaQ)
+            );
+            AddChild(new Tile(transform, name));
+        }
+    }
 }
+

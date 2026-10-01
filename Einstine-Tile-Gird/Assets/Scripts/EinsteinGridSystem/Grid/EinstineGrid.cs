@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DaBu.EGS.GeometryHelper;
+using DaBu.EGS.Tiles;
 using UnityEngine;
 
 namespace DaBu.EGS.Grid
@@ -9,28 +10,31 @@ namespace DaBu.EGS.Grid
     public class EinstineGrid : MonoBehaviour
     {
         [SerializeField] private float cellSize = 1f;
+        
+        private MetaTileFactory tileFactory;
             
         private MeshFilter meshFilter;
 
         private void Start()
         {
+            tileFactory = new MetaTileFactory();
             meshFilter = GetComponent<MeshFilter>();
-                
+            
             GenerateMesh();
         }
-
+        
         private void GenerateMesh()
         {
             List<Vector3> vertices = new List<Vector3>();
             List<int> triangles = new List<int>();
             List<Color> colors = new List<Color>();
+            
+            tileFactory.CreateMetaTiles();
 
-            AddHat(
-                new Vector2Int(5, 5),
-                vertices,
-                triangles,
-                colors
-            );
+            foreach (Tile child in tileFactory.MetaTileH.Children)
+            {
+                AddHat(child.Transform, vertices, triangles, colors);
+            }
 
             Mesh mesh = new Mesh();
             mesh.name = "Hat";
@@ -45,14 +49,15 @@ namespace DaBu.EGS.Grid
             meshFilter.mesh = mesh;
         }
 
-        private void AddHat(Vector2Int startPos, List<Vector3> vertices, List<int> triangles, List<Color> colors)
+        private void AddHat(Matrix4x4 transform, List<Vector3> vertices, List<int> triangles, List<Color> colors)
         {
             int startIndex = vertices.Count;
 
-            foreach (Vector2Int point in Vector2Extensions.hatOutline)
+            foreach (Vector2 point in Vector2Extensions.hatOutline)
             {
-                Vector2 latticePoint = startPos + point;
-                Vector2 worldPoint = latticePoint.HexPt(cellSize);
+                Vector2 transformed = transform.MultiplyPoint3x4(new Vector3(point.x, point.y, 0f));
+                
+                Vector2 worldPoint = transformed.HexPt(cellSize);
                 
                 vertices.Add(new Vector3(worldPoint.x, 0, worldPoint.y));
             }
@@ -83,11 +88,11 @@ namespace DaBu.EGS.Grid
 
                     int nextIndex = remaining[(i + 1) % remaining.Count];
 
-                    Vector2Int a = Vector2Extensions.hatOutline[previousIndex];
+                    Vector2 a = Vector2Extensions.hatOutline[previousIndex];
 
-                    Vector2Int b = Vector2Extensions.hatOutline[currentIndex];
+                    Vector2 b = Vector2Extensions.hatOutline[currentIndex];
 
-                    Vector2Int c = Vector2Extensions.hatOutline[nextIndex];
+                    Vector2 c = Vector2Extensions.hatOutline[nextIndex];
 
                     if (!IsConvex(a, b, c))
                         continue;
@@ -103,8 +108,7 @@ namespace DaBu.EGS.Grid
                             testIndex == nextIndex)
                             continue;
 
-                        Vector2Int point =
-                            Vector2Extensions.hatOutline[testIndex];
+                        Vector2 point = Vector2Extensions.hatOutline[testIndex];
 
                         if (PointInTriangle(point, a, b, c))
                         {
@@ -139,20 +143,20 @@ namespace DaBu.EGS.Grid
             triangles.Add(startIndex + remaining[2]);
         }
         
-        private bool IsConvex(Vector2Int a, Vector2Int b, Vector2Int c)
+        private bool IsConvex(Vector2 a, Vector2 b, Vector2 c)
         {
-            int cross = (b.x - a.x) * (c.y - b.y) - (b.y - a.y) * (c.x - b.x);
+            float cross = (b.x - a.x) * (c.y - b.y) - (b.y - a.y) * (c.x - b.x);
 
             return cross > 0;
         }
         
-        private bool PointInTriangle(Vector2Int p, Vector2Int a, Vector2Int b, Vector2Int c)
+        private bool PointInTriangle(Vector2 p, Vector2 a, Vector2 b, Vector2 c)
         {
-            int cross1 = Cross(a, b, p);
+            float cross1 = Cross(a, b, p);
 
-            int cross2 = Cross(b, c, p);
+            float cross2 = Cross(b, c, p);
 
-            int cross3 = Cross(c, a, p);
+            float cross3 = Cross(c, a, p);
 
             bool hasNegative = cross1 < 0 || cross2 < 0 || cross3 < 0;
 
@@ -160,8 +164,7 @@ namespace DaBu.EGS.Grid
 
             return !(hasNegative && hasPositive);
         }
-        
-        private int Cross(Vector2Int a, Vector2Int b, Vector2Int c)
+        private float Cross(Vector2 a, Vector2 b, Vector2 c)
         {
             return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
         }
