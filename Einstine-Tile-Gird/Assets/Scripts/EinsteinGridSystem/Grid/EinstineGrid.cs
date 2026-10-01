@@ -11,6 +11,15 @@ namespace DaBu.EGS.Grid
     {
         public static float CellSize = 1f;
         
+        private readonly Dictionary<TileType, Color> _hatColors = new()
+        {
+            { TileType.H1, Color.blue },
+            { TileType.H,  Color.cyan },
+            { TileType.T,  Color.white },
+            { TileType.P,  Color.white },
+            { TileType.F,  Color.gray }
+        };
+        
         private MetaTileFactory tileFactory;
             
         private MeshFilter meshFilter;
@@ -28,7 +37,6 @@ namespace DaBu.EGS.Grid
             List<Vector3> vertices = new List<Vector3>();
             List<int> triangles = new List<int>();
             List<Color> colors = new List<Color>();
-            
             
             tileFactory.CreateMetaTiles();
 
@@ -57,7 +65,7 @@ namespace DaBu.EGS.Grid
             foreach (Vector2 point in Vector2Extensions.hatOutline)
             {
                 Vector2 transformed = tile.Transform.MultiplyPoint3x4(new Vector3(point.x, point.y, 0f));
-                colors.Add(tile.Reflected ? Color.blue : Color.cyan);
+                colors.Add(_hatColors[tile.TileType]);
                 vertices.Add(new Vector3(transformed.x * CellSize, 0, transformed.y * CellSize));
             }
             

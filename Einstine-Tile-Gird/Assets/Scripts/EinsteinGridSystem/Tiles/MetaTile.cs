@@ -6,26 +6,46 @@ namespace DaBu.EGS.Tiles
 {
     public class MetaTile
     {
-        private MetaTileDefinition _definition;
+        private Vector2[] _outline;
+        public TileType Type { get; private set; }
+        public Matrix4x4 Transform { get; private set; }
         public List<Tile> Children { get; private set; }
     
-        public MetaTile(MetaTileDefinition definition)
+        public MetaTile(TileType type, Vector2[] outline)
         {
-            _definition = definition;
+            Type = type;
+            _outline = outline;
             Children = new List<Tile>();
         }
         
-        public void AddChild(Tile tile) => Children.Add(tile);
+        public void SetTransform(Matrix4x4 transform) => Transform = transform;
         
-        public void AddChild(int hatP, int hatQ, int metaP, int metaQ, string name, bool reflected = false)
+        private void AddChild(Tile tile) => Children.Add(tile);
+
+        public void AddChild(Matrix4x4 transform)
+        {
+            AddChild(transform, Type);
+        }
+
+        public void AddChild(Matrix4x4 transform, TileType type)
+        {
+            AddChild(new Tile(transform, type));
+        }
+        
+        public void AddChild(int hatP, int hatQ, int metaP, int metaQ)
         {
             Matrix4x4 transform = MatrixExtensions.MatchTwo(
                 Vector2Extensions.hatOutline[hatP],
                 Vector2Extensions.hatOutline[hatQ],
-                _definition.Outline(metaP),
-                _definition.Outline(metaQ)
+                _outline[metaP],
+                _outline[metaQ]
             );
-            AddChild(new Tile(transform, name, reflected));
+            AddChild(new Tile(transform, Type));
+        }
+
+        public Vector2 GetWorldPosition(int index)
+        {
+            return _outline[index].HexPt();
         }
     }
 }

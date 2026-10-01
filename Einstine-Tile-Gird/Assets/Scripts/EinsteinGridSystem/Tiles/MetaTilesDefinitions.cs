@@ -5,20 +5,20 @@ namespace DaBu.EGS.Tiles
 {
     public static class MetaTilesDefinitions
     {
-        public static MetaTileDefinition H;
-        public static MetaTileDefinition T;
-        public static MetaTileDefinition P;
-        public static MetaTileDefinition F;
+        public static MetaTile H;
+        public static MetaTile T;
+        public static MetaTile P;
+        public static MetaTile F;
 
         public static void Initialize()
         {
-            H = new MetaTileDefinition(MetaTileType.H, GetHOutline());
+            H = new MetaTile(TileType.H, GetHOutline());
 
-            T = new MetaTileDefinition(MetaTileType.T, GetTOutline());
+            T = new MetaTile(TileType.T, GetTOutline());
 
-            P = new MetaTileDefinition(MetaTileType.P, GetPOutline());
+            P = new MetaTile(TileType.P, GetPOutline());
 
-            F = new MetaTileDefinition(MetaTileType.F, GetFOutline());
+            F = new MetaTile(TileType.F, GetFOutline());
         }
 
         private static Vector2[] GetHOutline()

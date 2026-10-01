@@ -1,7 +1,8 @@
 namespace DaBu.EGS.Tiles
 {
-    public enum MetaTileType
+    public enum TileType
     {
+        H1,
         H,
         T,
         P,
