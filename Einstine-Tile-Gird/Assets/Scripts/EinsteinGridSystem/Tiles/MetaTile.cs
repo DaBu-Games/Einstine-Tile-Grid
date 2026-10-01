@@ -17,7 +17,7 @@ namespace DaBu.EGS.Tiles
         
         public void AddChild(Tile tile) => Children.Add(tile);
         
-        public void AddChild(int hatP, int hatQ, int metaP, int metaQ, string name)
+        public void AddChild(int hatP, int hatQ, int metaP, int metaQ, string name, bool reflected = false)
         {
             Matrix4x4 transform = MatrixExtensions.MatchTwo(
                 Vector2Extensions.hatOutline[hatP],
@@ -25,7 +25,7 @@ namespace DaBu.EGS.Tiles
                 _definition.Outline(metaP),
                 _definition.Outline(metaQ)
             );
-            AddChild(new Tile(transform, name));
+            AddChild(new Tile(transform, name, reflected));
         }
     }
 }

@@ -42,7 +42,7 @@ namespace DaBu.EGS.Tiles
 
             Matrix4x4 h1Transform = transform * rotation * reflection;
 
-            MetaTileH.AddChild(new Tile(h1Transform, "H1_hat"));
+            MetaTileH.AddChild(new Tile(h1Transform, "H1_hat", true));
         }
     }
 }

@@ -29,11 +29,12 @@ namespace DaBu.EGS.Grid
             List<int> triangles = new List<int>();
             List<Color> colors = new List<Color>();
             
+            
             tileFactory.CreateMetaTiles();
 
             foreach (Tile child in tileFactory.MetaTileH.Children)
             {
-                AddHat(child.Transform, vertices, triangles, colors);
+                AddHat(child, vertices, triangles, colors);
             }
 
             Mesh mesh = new Mesh();
@@ -49,14 +50,14 @@ namespace DaBu.EGS.Grid
             meshFilter.mesh = mesh;
         }
 
-        private void AddHat(Matrix4x4 transform, List<Vector3> vertices, List<int> triangles, List<Color> colors)
+        private void AddHat(Tile tile, List<Vector3> vertices, List<int> triangles, List<Color> colors)
         {
             int startIndex = vertices.Count;
 
             foreach (Vector2 point in Vector2Extensions.hatOutline)
             {
-                Vector2 transformed = transform.MultiplyPoint3x4(new Vector3(point.x, point.y, 0f));
-                
+                Vector2 transformed = tile.Transform.MultiplyPoint3x4(new Vector3(point.x, point.y, 0f));
+                colors.Add(tile.Reflected ? Color.blue : Color.cyan);
                 vertices.Add(new Vector3(transformed.x * CellSize, 0, transformed.y * CellSize));
             }
             
