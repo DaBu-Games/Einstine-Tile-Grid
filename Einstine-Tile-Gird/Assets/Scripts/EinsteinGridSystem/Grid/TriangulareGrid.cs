@@ -8,7 +8,7 @@ namespace DaBu.EGS.Grid
     public class TriangulareGrid : MonoBehaviour
     {
         [SerializeField] private Vector2Int gridSize = new Vector2Int(10, 10);
-        [SerializeField] private float cellSize = 1f;
+        //[SerializeField] private float cellSize = 1f;
 
         private Vector2[] grid;
         

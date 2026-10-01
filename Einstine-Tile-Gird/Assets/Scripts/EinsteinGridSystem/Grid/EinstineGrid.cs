@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DaBu.EGS.GeometryHelper;
+using DaBu.EGS.MetaTiles;
 using DaBu.EGS.Tiles;
 using UnityEngine;
 
@@ -9,6 +10,9 @@ namespace DaBu.EGS.Grid
     [RequireComponent(typeof(MeshRenderer))]
     public class EinstineGrid : MonoBehaviour
     {
+        public int level = 1;
+        public TileType tileType;
+            
         public static float CellSize = 1f;
         
         private readonly Dictionary<TileType, Color> _hatColors = new()
@@ -37,10 +41,8 @@ namespace DaBu.EGS.Grid
             List<Vector3> vertices = new List<Vector3>();
             List<int> triangles = new List<int>();
             List<Color> colors = new List<Color>();
-            
-            tileFactory.CreateMetaTiles();
 
-            foreach (Tile child in tileFactory.MetaTileH.Children)
+            foreach (Tile child in tileFactory.GetSuperTile(tileType, level).Children)
             {
                 AddHat(child, vertices, triangles, colors);
             }

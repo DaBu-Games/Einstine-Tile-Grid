@@ -1,7 +1,8 @@
 using UnityEngine;
 using DaBu.EGS.GeometryHelper;
+using DaBu.EGS.Tiles;
 
-namespace DaBu.EGS.Tiles
+namespace DaBu.EGS.MetaTiles
 {
     public static class MetaTilesDefinitions
     {
